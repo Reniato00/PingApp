@@ -4,39 +4,70 @@
         x:Class="PingViewerApp.DashboardWindow"
 		xmlns:vm="clr-namespace:PingViewerApp"
         x:DataType="vm:DashboardWindow"
-        Width="800" Height="600"
+        Width="850" Height="525"
         Title="Dashboard"
 		Icon="/Assets/Icons/icon.png"
 		Background="#FFFAFAFA"
         WindowStartupLocation="CenterScreen">
-	<StackPanel Margin="10" HorizontalAlignment="Left">
-		<!-- Headers -->
-		<StackPanel Orientation="Horizontal" Background="LightGray" >
-			<TextBlock Text="Host" Width="150" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
-			<TextBlock Text="Status" Width="100" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
-			<TextBlock Text="TimeMs" Width="75" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
-			<TextBlock Text="Action" Width="100" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
-		</StackPanel>
+	<Grid>
+		<StackPanel Margin="10" HorizontalAlignment="Left">
+			<!-- Headers -->
+			<StackPanel Orientation="Horizontal" Background="LightGray" >
+				<TextBlock Text="Name" Width="150" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+				<TextBlock Text="Host" Width="150" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+				<TextBlock Text="Status" Width="100" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+				<TextBlock Text="TimeMs" Width="75" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+				<TextBlock Text="Action" Width="100" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+			</StackPanel>
 
-		<!-- ListBox con items -->
-		<ListBox ItemsSource="{Binding Pings}" MaxHeight="400">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<StackPanel Orientation="Horizontal" >
-						<TextBlock Text="{Binding Host}" Width="150" TextAlignment="Left"/>
-						<TextBlock Text="{Binding Status}" Width="100" TextAlignment="Center"/>
-						<TextBlock Text="{Binding TimeMs}" Width="75" TextAlignment="Center"/>
-						<Button Width="100">
-							<TextBlock Text="Reping"
-								HorizontalAlignment="Center"
-								VerticalAlignment="Center"
-								TextAlignment="Center" />
-						</Button>
-					</StackPanel>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
-	</StackPanel>
-	
-	
+			<!-- ListBox con items -->
+			<ListBox ItemsSource="{Binding Pings}" MaxHeight="400">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal" >
+							<TextBlock Text="{Binding Name}" Width="150" TextAlignment="Left"/>
+							<TextBlock Text="{Binding Host}" Width="150" TextAlignment="Left"/>
+							<TextBlock Text="{Binding Status}" Width="100" TextAlignment="Center"/>
+							<TextBlock Text="{Binding TimeMs}" Width="75" TextAlignment="Center"/>
+							<Button Width="100">
+								<TextBlock Text="Reping"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center"
+									TextAlignment="Center" />
+							</Button>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			<Grid Margin="10" Width="200">
+				<TextBlock Text="Total of Pings: " HorizontalAlignment="Left" VerticalAlignment="Center"/>
+				<TextBlock Text="{Binding Pings.Count}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+			</Grid>
+			<Grid Margin="10" Width="200">
+				<Button HorizontalAlignment="Center">
+					<TextBlock Text="Reload Pings"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						TextAlignment="Center" />
+				</Button>
+			</Grid>
+		</StackPanel>
+		<!-- Placeholder for additional content or controls -->
+		<StackPanel Margin="10" HorizontalAlignment="Right">
+			<TextBlock Text="Add Other url or IP to check Ping" FontWeight="Bold" Margin="0,10,0,10"/>
+			
+			<TextBlock Text="Name"/>
+			<TextBox Width="200" Margin="0,5,0,5" Watermark="Enter Name or Tag"/>
+			<TextBlock Text="Url or IP"/>
+			<TextBox Width="200" Margin="0,5,0,5" Watermark="Enter URL or IP"/>
+			
+			<Button Width="200" Margin="10">
+				<TextBlock Text="Add Ping"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					TextAlignment="Center"/>
+			</Button>
+
+		</StackPanel>
+	</Grid>
 </Window>
