@@ -2,7 +2,7 @@ namespace PingViewerApp;
 
 public class PingResult
 {
-    public required string Host { get; set; }
-    public required string Status { get; set; }
+    public string Host { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
     public int? TimeMs { get; set; }
 }

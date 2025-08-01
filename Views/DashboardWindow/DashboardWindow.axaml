@@ -2,15 +2,41 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
         x:Class="PingViewerApp.DashboardWindow"
+		xmlns:vm="clr-namespace:PingViewerApp"
+        x:DataType="vm:DashboardWindow"
         Width="800" Height="600"
         Title="Dashboard"
+		Icon="/Assets/Icons/icon.png"
+		Background="#FFFAFAFA"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <controls:DataGrid 
-            Name="PingDataGrid"
-            AutoGenerateColumns="True"
-            Margin="10"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"/>
-    </Grid>
+	<StackPanel Margin="10" HorizontalAlignment="Left">
+		<!-- Headers -->
+		<StackPanel Orientation="Horizontal" Background="LightGray" >
+			<TextBlock Text="Host" Width="150" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+			<TextBlock Text="Status" Width="100" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+			<TextBlock Text="TimeMs" Width="75" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+			<TextBlock Text="Action" Width="100" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center"/>
+		</StackPanel>
+
+		<!-- ListBox con items -->
+		<ListBox ItemsSource="{Binding Pings}" MaxHeight="400">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal" >
+						<TextBlock Text="{Binding Host}" Width="150" TextAlignment="Left"/>
+						<TextBlock Text="{Binding Status}" Width="100" TextAlignment="Center"/>
+						<TextBlock Text="{Binding TimeMs}" Width="75" TextAlignment="Center"/>
+						<Button Width="100">
+							<TextBlock Text="Reping"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								TextAlignment="Center" />
+						</Button>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</StackPanel>
+	
+	
 </Window>
