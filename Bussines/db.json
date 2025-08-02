@@ -1,0 +1,20 @@
+{
+  "pings": [
+    {
+      "name": "Ping 1",
+      "host": "This is the first ping"
+    },
+    {
+      "name": "Google",
+      "host": "www.google.com"
+    },
+    {
+      "name": "Github",
+      "host": "www.github.com"
+    },
+    {
+      "name": "OpenAi",
+      "host": "www.openai.com"
+    }
+  ]
+}
