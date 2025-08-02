@@ -15,7 +15,7 @@ namespace PingViewerApp.Bussines.Services
             {
                 try
                 {
-                    PingReply reply = await pingSender.SendPingAsync(item.Host);
+                    PingReply reply = await pingSender.SendPingAsync(item.Host).ConfigureAwait(false);
                     if (reply.Status == IPStatus.Success)
                     {
                         pingResults.Add(new PingResult

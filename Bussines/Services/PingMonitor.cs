@@ -9,14 +9,14 @@ namespace PingViewerApp.Bussines.Services
 {
     public class PingMonitor
     {
-        public async Task<List<PingResult>> GetResults()
+        public List<PingResult> GetResults()
         {
             var json = File.ReadAllText("db.json");
             var pings = JsonSerializer.Deserialize<PingDatabase>(json);
             var pingRequester = new PingRequester();
-            var pingResults = await pingRequester.GetPingsHealth(pings?.Pings
+            var pingResults = pingRequester.GetPingsHealth(pings?.Pings
                 .Select(x => new PingItem { Name = x.Name, Host = x.Host })
-                .ToList() ?? new List<PingItem>());
+                .ToList() ?? new List<PingItem>()).Result;
             return pingResults;
         }
     }
