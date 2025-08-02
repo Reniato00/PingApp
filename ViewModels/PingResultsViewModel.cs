@@ -1,3 +1,4 @@
+using PingViewerApp.Bussines.Services;
 using System.Collections.ObjectModel;
 
 namespace PingViewerApp
@@ -8,6 +9,10 @@ namespace PingViewerApp
 
         public PingResultsViewModel()
         {
+            //Example data for demonstration purposes
+
+            var monitor = new PingMonitor();
+            var pingResults = monitor.GetResults().Result;
             Pings = new ObservableCollection<PingResult>
             {
                 new() { Name = "Google", Host = "google.com", Status = "Success", TimeMs = 32 },

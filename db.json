@@ -1,0 +1,16 @@
+{
+  "pings": [
+    {
+      "name": "Google",
+      "host": "google.com"
+    },
+    {
+      "name": "Github",
+      "host": "github.com"
+    },
+    {
+      "name": "OpenAi",
+      "host": "openai.com"
+    }
+  ]
+}

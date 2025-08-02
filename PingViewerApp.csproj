@@ -22,4 +22,14 @@
 		<AvaloniaResource Include="Assets/Icons/**" />
 		<AvaloniaResource Include="Assets/Images/**" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="db.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="db.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
 </Project>
