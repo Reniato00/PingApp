@@ -43,13 +43,14 @@
 				<TextBlock Text="Total of Pings: " HorizontalAlignment="Left" VerticalAlignment="Center"/>
 				<TextBlock Text="{Binding Pings.Count}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 			</Grid>
-			<Grid Margin="10" Width="200">
-				<Button HorizontalAlignment="Center">
+			<Grid Margin="10" Width="300">
+				<Button HorizontalAlignment="Left" VerticalAlignment="Center">
 					<TextBlock Text="Reload Pings"
 						HorizontalAlignment="Center"
 						VerticalAlignment="Center"
 						TextAlignment="Center" />
 				</Button>
+				<TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Updating results every 15s." FontWeight="Bold"/>
 			</Grid>
 		</StackPanel>
 		<!-- Placeholder for additional content or controls -->
