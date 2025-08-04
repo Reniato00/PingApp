@@ -13,12 +13,7 @@ namespace PingViewerApp
 
             var monitor = new PingMonitor();
             var pingResults = monitor.GetResults();
-            Pings = new ObservableCollection<PingResult>
-            {
-                new() { Name = "Google", Host = "google.com", Status = "Success", TimeMs = 32 },
-                new() { Name = "Github", Host = "github.com", Status = "Timeout", TimeMs = 0 },
-                new() { Name = "OpenAi", Host = "openai.com", Status = "Success", TimeMs = 27 },
-            };
+            Pings = new ObservableCollection<PingResult>(pingResults);
         }
     }
 }
