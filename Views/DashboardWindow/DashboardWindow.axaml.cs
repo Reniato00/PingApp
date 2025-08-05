@@ -4,11 +4,10 @@ namespace PingViewerApp;
 
 public partial class DashboardWindow : Window
 {
-    public DashboardWindow()
+    public DashboardWindow(PingResultsViewModel vm)
     {
         InitializeComponent();
-        var pingResultsViewModel = new PingResultsViewModel();
+        var pingResultsViewModel = vm;
         DataContext = pingResultsViewModel;
-
     }
 }

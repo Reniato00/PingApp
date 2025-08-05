@@ -21,6 +21,8 @@
 
 		<AvaloniaResource Include="Assets/Icons/**" />
 		<AvaloniaResource Include="Assets/Images/**" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>

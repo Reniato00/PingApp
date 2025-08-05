@@ -1,19 +1,30 @@
 using PingViewerApp.Bussines.Services;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace PingViewerApp
 {
     public class PingResultsViewModel
     {
-        public ObservableCollection<PingResult> Pings { get; set; }
+        public ObservableCollection<PingResult> Pings { get; set; } = new();
 
-        public PingResultsViewModel()
+        private readonly IPingMonitor pingMonitor;
+        public PingResultsViewModel(IPingMonitor pingMonitor)
         {
-            //Example data for demonstration purposes
+            this.pingMonitor = pingMonitor;
+            _ = LoadAsync(); // Se ignora el await aquí para no cambiar a constructor async
+        }
 
-            var monitor = new PingMonitor();
-            var pingResults = monitor.GetResults();
-            Pings = new ObservableCollection<PingResult>(pingResults);
+        private async Task LoadAsync()
+        {
+            await pingMonitor.PingAllAsync(result =>
+            {
+                // Esto asegura que los cambios en la colección ocurran en el hilo de UI
+                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                {
+                    Pings.Add(result);
+                });
+            });
         }
     }
 }

@@ -1,55 +1,54 @@
 ﻿using PingViewerApp.Bussines.Entities;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace PingViewerApp.Bussines.Services
 {
-    public class PingRequester
+    public class PingRequester : IPingRequester
     {
-        public async Task<List<PingResult>> GetPingsHealth(List<PingItem> pingItems)
+        public async Task PingEachAsync(List<PingItem> pingItems, Action<PingResult> onPingCompleted)
         {
-            Ping pingSender = new Ping();
-            List<PingResult> pingResults = new List<PingResult>();
-            foreach (var item in pingItems)
+            var tasks = pingItems.Select(async item =>
             {
+                PingResult result;
+                using var pingSender = new Ping();
                 try
                 {
                     PingReply reply = await pingSender.SendPingAsync(item.Host).ConfigureAwait(false);
-                    if (reply.Status == IPStatus.Success)
+
+                    result = new PingResult
                     {
-                        pingResults.Add(new PingResult
-                        {
-                            Name = item.Name,
-                            Host = item.Host,
-                            Status = "Success",
-                            TimeMs = (int)reply.RoundtripTime
-                        });
-                    }
-                    else
-                    {
-                        pingResults.Add(new PingResult
-                        {
-                            Name = item.Name,
-                            Host = item.Host,
-                            Status = "Failed",
-                            TimeMs = null
-                        });
-                    }
+                        Name = item.Name,
+                        Host = item.Host,
+                        Status = reply.Status == IPStatus.Success ? "Success" : "Failed",
+                        TimeMs = reply.Status == IPStatus.Success ? (int?)reply.RoundtripTime : null
+                    };
                 }
                 catch
                 {
-                    pingResults.Add(new PingResult
+                    result = new PingResult
                     {
                         Name = item.Name,
                         Host = item.Host,
                         Status = "Error",
                         TimeMs = null
-                    });
-                    continue;
+                    };
                 }
-            }
-            return pingResults;
+
+                onPingCompleted(result);
+            });
+
+            await Task.WhenAll(tasks);
         }
+
+    }
+
+    public interface IPingRequester
+    {
+        //Task<List<PingResult>> GetPingsHealth(List<PingItem> pingItems);
+        Task PingEachAsync(List<PingItem> pingItems, Action<PingResult> onPingCompleted);
     }
 }

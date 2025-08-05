@@ -11,6 +11,10 @@
     {
       "name": "OpenAi",
       "host": "openai.com"
+    },
+    {
+      "name": "Yahoo",
+      "host": "yahoo.com"
     }
   ]
 }
