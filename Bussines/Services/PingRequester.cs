@@ -48,7 +48,6 @@ namespace PingViewerApp.Bussines.Services
 
     public interface IPingRequester
     {
-        //Task<List<PingResult>> GetPingsHealth(List<PingItem> pingItems);
         Task PingEachAsync(List<PingItem> pingItems, Action<PingResult> onPingCompleted);
     }
 }

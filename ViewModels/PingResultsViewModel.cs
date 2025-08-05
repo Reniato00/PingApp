@@ -1,4 +1,5 @@
 using PingViewerApp.Bussines.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace PingViewerApp
         public PingResultsViewModel(IPingMonitor pingMonitor)
         {
             this.pingMonitor = pingMonitor;
-            _ = LoadAsync(); // Se ignora el await aquí para no cambiar a constructor async
+            _ = StartMonitoringLoopAsync(); // Se ignora el await aquí para no cambiar a constructor async
         }
 
         private async Task LoadAsync()
@@ -25,6 +26,26 @@ namespace PingViewerApp
                     Pings.Add(result);
                 });
             });
+        }
+
+        private async Task StartMonitoringLoopAsync()
+        {
+            while (true)
+            {
+                // Limpia los resultados anteriores si quieres que se reemplacen:
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => Pings.Clear());
+
+                await pingMonitor.PingAllAsync(result =>
+                {
+                    // Usar el dispatcher para actualizar la UI desde hilo secundario
+                    Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                    {
+                        Pings.Add(result);
+                    });
+                });
+
+                await Task.Delay(TimeSpan.FromSeconds(15)); // Esperar 15 segundos antes de repetir
+            }
         }
     }
 }
