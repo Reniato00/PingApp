@@ -1,3 +1,4 @@
+using PingViewerApp.Bussines.Entities;
 using PingViewerApp.Bussines.Services;
 using System;
 using System.Collections.ObjectModel;
@@ -20,7 +21,6 @@ namespace PingViewerApp
         {
             await pingMonitor.PingAllAsync(result =>
             {
-                // Esto asegura que los cambios en la colección ocurran en el hilo de UI
                 Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                 {
                     Pings.Add(result);
@@ -37,15 +37,29 @@ namespace PingViewerApp
 
                 await pingMonitor.PingAllAsync(result =>
                 {
-                    // Usar el dispatcher para actualizar la UI desde hilo secundario
                     Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                     {
                         Pings.Add(result);
                     });
                 });
 
-                await Task.Delay(TimeSpan.FromSeconds(15)); // Esperar 15 segundos antes de repetir
+                await Task.Delay(TimeSpan.FromSeconds(30)); // Esperar 30 segundos antes de repetir
             }
+        }
+
+        private async Task RepingAsync(PingResult pingResult) 
+        {
+            var newResult = await pingMonitor.RepingOneAsync(new PingItem
+            {
+                Host = pingResult.Host,
+                Name = pingResult.Name,
+            });
+
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                pingResult.Status = newResult.Status;
+                pingResult.TimeMs = newResult.TimeMs;
+            });
         }
     }
 }

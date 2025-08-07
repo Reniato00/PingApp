@@ -44,11 +44,17 @@ namespace PingViewerApp.Bussines.Services
 
             await pingRequester.PingEachAsync(items, onPingCompleted);
         }
+
+        public async Task<PingResult> RepingOneAsync(PingItem item)
+        {
+            return await pingRequester.PingAsync(item);
+        }
     }
 
     public interface IPingMonitor
     {
         //List<PingResult> GetResults();
+        Task<PingResult> RepingOneAsync(PingItem item);
         Task PingAllAsync(Action<PingResult> onPingCompleted);
     }
 }

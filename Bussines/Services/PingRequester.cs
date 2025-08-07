@@ -34,7 +34,7 @@ namespace PingViewerApp.Bussines.Services
                         Name = item.Name,
                         Host = item.Host,
                         Status = "Error",
-                        TimeMs = null
+                        TimeMs = 0
                     };
                 }
 
@@ -44,10 +44,38 @@ namespace PingViewerApp.Bussines.Services
             await Task.WhenAll(tasks);
         }
 
+        public async Task<PingResult> PingAsync(PingItem item)
+        {
+            using var pingSender = new Ping();
+            try
+            {
+                PingReply reply = await pingSender.SendPingAsync(item.Host);
+                return new PingResult
+                {
+                    Name = item.Name,
+                    Host = item.Host,
+                    TimeMs = (int)reply.RoundtripTime,
+                    Status = reply.Status.ToString()
+                };
+            }
+            catch (Exception ex)
+            {
+                return new PingResult
+                {
+                    Name = item.Name,
+                    Host = item.Host,
+                    TimeMs = -1,
+                    Status = $"Error: {ex.Message}"
+                };
+            }
+        }
+
+
     }
 
     public interface IPingRequester
     {
         Task PingEachAsync(List<PingItem> pingItems, Action<PingResult> onPingCompleted);
+        Task<PingResult> PingAsync(PingItem item);
     }
 }

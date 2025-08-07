@@ -29,7 +29,7 @@
 							<TextBlock Text="{Binding Host}" Width="150" TextAlignment="Left"/>
 							<TextBlock Text="{Binding Status}" Width="100" TextAlignment="Center"/>
 							<TextBlock Text="{Binding TimeMs}" Width="75" TextAlignment="Center"/>
-							<Button Width="100">
+							<Button Width="100" Click="OnRepingClick">
 								<TextBlock Text="Reping"
 									HorizontalAlignment="Center"
 									VerticalAlignment="Center"
@@ -68,7 +68,7 @@
 					VerticalAlignment="Center"
 					TextAlignment="Center"/>
 			</Button>
-
+			
 		</StackPanel>
 	</Grid>
 </Window>
