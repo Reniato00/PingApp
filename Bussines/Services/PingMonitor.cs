@@ -49,6 +49,27 @@ namespace PingViewerApp.Bussines.Services
         {
             return await pingRequester.PingAsync(item);
         }
+
+        public async Task RepingAllAsync(List<PingResult> existingResults, Action<PingResult> onPingCompleted)
+        {
+            var json = File.ReadAllText("db.json");
+            var pings = JsonSerializer.Deserialize<PingDatabase>(json);
+
+            var items = pings?.Pings
+                .Select(x => new PingItem { Name = x.Name, Host = x.Host })
+                .ToList() ?? new List<PingItem>();
+
+            await pingRequester.PingEachAsync(items, result =>
+            {
+                var existing = existingResults.FirstOrDefault(r => r.Host == result.Host);
+                if (existing != null)
+                {
+                    existing.Status = result.Status;
+                    existing.TimeMs = result.TimeMs;
+                }
+                onPingCompleted?.Invoke(result);
+            });
+        }
     }
 
     public interface IPingMonitor
@@ -56,5 +77,6 @@ namespace PingViewerApp.Bussines.Services
         //List<PingResult> GetResults();
         Task<PingResult> RepingOneAsync(PingItem item);
         Task PingAllAsync(Action<PingResult> onPingCompleted);
+        Task RepingAllAsync(List<PingResult> existingResults, Action<PingResult> onPingCompleted);
     }
 }

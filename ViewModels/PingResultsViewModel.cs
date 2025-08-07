@@ -2,6 +2,7 @@ using PingViewerApp.Bussines.Entities;
 using PingViewerApp.Bussines.Services;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PingViewerApp
@@ -14,7 +15,7 @@ namespace PingViewerApp
         public PingResultsViewModel(IPingMonitor pingMonitor)
         {
             this.pingMonitor = pingMonitor;
-            _ = StartMonitoringLoopAsync(); // Se ignora el await aquí para no cambiar a constructor async
+            _ = StartMonitoringLoopAsync();
         }
 
         private async Task LoadAsync()
@@ -60,6 +61,11 @@ namespace PingViewerApp
                 pingResult.Status = newResult.Status;
                 pingResult.TimeMs = newResult.TimeMs;
             });
+        }
+
+        public async Task RePingAllAsync()
+        {
+            await pingMonitor.RepingAllAsync(Pings.ToList(),null);
         }
     }
 }

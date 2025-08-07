@@ -44,7 +44,7 @@
 				<TextBlock Text="{Binding Pings.Count}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 			</Grid>
 			<Grid Margin="10" Width="300">
-				<Button HorizontalAlignment="Left" VerticalAlignment="Center">
+				<Button HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnRepingAll">
 					<TextBlock Text="Reload Pings"
 						HorizontalAlignment="Center"
 						VerticalAlignment="Center"

@@ -39,4 +39,12 @@ public partial class DashboardWindow : Window
             btn.IsEnabled= true;
         }
     }
+
+    private async void OnRepingAll(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is PingResultsViewModel vm)
+        {
+            await vm.RePingAllAsync();
+        }
+    }
 }
