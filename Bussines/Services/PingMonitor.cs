@@ -1,6 +1,7 @@
 ﻿using PingViewerApp.Bussines.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -17,22 +18,6 @@ namespace PingViewerApp.Bussines.Services
             this.pingRequester = pingRequester;
         }
 
-        //// Método tradicional: carga todo, espera y regresa la lista completa
-        //public List<PingResult> GetResults()
-        //{
-        //    var json = File.ReadAllText("db.json");
-        //    var pings = JsonSerializer.Deserialize<PingDatabase>(json);
-
-        //    var pingResults = pingRequester.GetPingsHealth(
-        //        pings?.Pings
-        //            .Select(x => new PingItem { Name = x.Name, Host = x.Host })
-        //            .ToList() ?? new List<PingItem>()
-        //    ).Result;
-
-        //    return pingResults;
-        //}
-
-        // Método nuevo: ejecuta cada ping en paralelo y llama al callback cuando termine cada uno
         public async Task PingAllAsync(Action<PingResult> onPingCompleted)
         {
             var json = File.ReadAllText("db.json");
@@ -43,6 +28,18 @@ namespace PingViewerApp.Bussines.Services
                 .ToList() ?? new List<PingItem>();
 
             await pingRequester.PingEachAsync(items, onPingCompleted);
+        }
+
+        public void AddNewHost(PingItem newItem) 
+        {
+            var json = File.ReadAllText("db.json");
+            var pings = JsonSerializer.Deserialize<PingDatabase>(json);
+
+            if(!pings.Pings.Any(p=>p.Host == newItem.Host))
+                pings.Pings.Add(newItem);
+
+            var updatedJson = JsonSerializer.Serialize(pings, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText("db.json", updatedJson);
         }
 
         public async Task<PingResult> RepingOneAsync(PingItem item)
@@ -74,9 +71,9 @@ namespace PingViewerApp.Bussines.Services
 
     public interface IPingMonitor
     {
-        //List<PingResult> GetResults();
         Task<PingResult> RepingOneAsync(PingItem item);
         Task PingAllAsync(Action<PingResult> onPingCompleted);
         Task RepingAllAsync(List<PingResult> existingResults, Action<PingResult> onPingCompleted);
+        void AddNewHost(PingItem newItem);
     }
 }

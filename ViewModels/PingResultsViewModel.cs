@@ -18,16 +18,16 @@ namespace PingViewerApp
             _ = StartMonitoringLoopAsync();
         }
 
-        private async Task LoadAsync()
-        {
-            await pingMonitor.PingAllAsync(result =>
-            {
-                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
-                {
-                    Pings.Add(result);
-                });
-            });
-        }
+        //private async Task LoadAsync()
+        //{
+        //    await pingMonitor.PingAllAsync(result =>
+        //    {
+        //        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        //        {
+        //            Pings.Add(result);
+        //        });
+        //    });
+        //}
 
         private async Task StartMonitoringLoopAsync()
         {
@@ -48,20 +48,20 @@ namespace PingViewerApp
             }
         }
 
-        private async Task RepingAsync(PingResult pingResult) 
-        {
-            var newResult = await pingMonitor.RepingOneAsync(new PingItem
-            {
-                Host = pingResult.Host,
-                Name = pingResult.Name,
-            });
+        //private async Task RepingAsync(PingResult pingResult) 
+        //{
+        //    var newResult = await pingMonitor.RepingOneAsync(new PingItem
+        //    {
+        //        Host = pingResult.Host,
+        //        Name = pingResult.Name,
+        //    });
 
-            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
-            {
-                pingResult.Status = newResult.Status;
-                pingResult.TimeMs = newResult.TimeMs;
-            });
-        }
+        //    Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        //    {
+        //        pingResult.Status = newResult.Status;
+        //        pingResult.TimeMs = newResult.TimeMs;
+        //    });
+        //}
 
         public async Task RePingAllAsync()
         {

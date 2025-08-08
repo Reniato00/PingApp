@@ -16,9 +16,9 @@ public partial class DashboardWindow : Window
         DataContext = pingResultsViewModel;
     }
 
-    private async void OnRepingClick(object? sender, RoutedEventArgs e) 
+    private async void OnRepingClick(object? sender, RoutedEventArgs e)
     {
-        if (sender is Button btn && btn.DataContext is PingResult pingResult) 
+        if (sender is Button btn && btn.DataContext is PingResult pingResult)
         {
             var item = new PingItem
             {
@@ -36,7 +36,7 @@ public partial class DashboardWindow : Window
                 pingResult.Status = result.Status;
             });
 
-            btn.IsEnabled= true;
+            btn.IsEnabled = true;
         }
     }
 
@@ -46,5 +46,38 @@ public partial class DashboardWindow : Window
         {
             await vm.RePingAllAsync();
         }
+    }
+
+    private void OnAddNewHost(object? sender, RoutedEventArgs e)
+    {
+        var name = NameTxtBox.Text;
+        var host = HostTxtBox.Text;
+
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(host))
+        {
+            return;
+        }
+
+        if (DataContext is PingResultsViewModel vm)
+        {
+            var newItem = new PingItem
+            {
+                Name = name,
+                Host = host
+            };
+
+            vm.Pings.Add(new PingResult
+            {
+                Name = newItem.Name,
+                Host = newItem.Host,
+                Status = "Pending",
+                TimeMs = null
+            });
+
+            pingMonitor.AddNewHost(newItem);
+        }
+
+        NameTxtBox.Text = string.Empty;
+        HostTxtBox.Text = string.Empty;
     }
 }
