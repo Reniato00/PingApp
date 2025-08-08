@@ -1,18 +1,15 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using PingViewerApp.Bussines.Services;
 
 namespace PingViewerApp;
 
 public partial class DashboardWindow : Window
 {
     private readonly PingResultsViewModel vm;
-    private readonly IPingMonitor pingMonitor;
-    public DashboardWindow(PingResultsViewModel vm, IPingMonitor pingMonitor)
+    public DashboardWindow(PingResultsViewModel vm)
     {
         InitializeComponent();
         this.vm = vm;
-        this.pingMonitor = pingMonitor;
         DataContext = this.vm;
     }
 
@@ -20,11 +17,8 @@ public partial class DashboardWindow : Window
     {
         if (sender is Button btn && btn.DataContext is PingResult pingResult)
         {
-
             btn.IsEnabled = false;
-
             await vm.RepingClick(pingResult);
-
             btn.IsEnabled = true;
         }
     }
@@ -32,9 +26,7 @@ public partial class DashboardWindow : Window
     private async void OnRepingAll(object? sender, RoutedEventArgs e)
     {
         if (DataContext is PingResultsViewModel vm)
-        {
             await vm.RePingAllAsync();
-        }
     }
 
     private void OnAddNewHost(object? sender, RoutedEventArgs e)
@@ -43,14 +35,10 @@ public partial class DashboardWindow : Window
         var host = HostTxtBox.Text;
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(host))
-        {
             return;
-        }
 
         if (DataContext is PingResultsViewModel vm)
-        {
             vm.AddNewHost(name, host);
-        }
 
         NameTxtBox.Text = string.Empty;
         HostTxtBox.Text = string.Empty;
@@ -61,9 +49,7 @@ public partial class DashboardWindow : Window
         if (sender is Button btn && btn.DataContext is PingResult pingResult) 
         {
             if (DataContext is PingResultsViewModel vm) 
-            {
                 vm.DeleteHost(pingResult);
-            }
         }
     }
 }
