@@ -9,6 +9,15 @@ using System.Threading.Tasks;
 
 namespace PingViewerApp.Bussines.Services
 {
+    public interface IPingMonitor
+    {
+        Task<PingResult> RepingOneAsync(PingItem item);
+        Task PingAllAsync(Action<PingResult> onPingCompleted);
+        Task RepingAllAsync(List<PingResult> existingResults, Action<PingResult> onPingCompleted);
+        void AddNewHost(PingItem newItem);
+        void DeleteHost(PingItem itemToDelete);
+    }
+
     public class PingMonitor : IPingMonitor
     {
         private readonly IPingRequester pingRequester;
@@ -35,7 +44,7 @@ namespace PingViewerApp.Bussines.Services
             var json = File.ReadAllText("db.json");
             var pings = JsonSerializer.Deserialize<PingDatabase>(json);
 
-            if(!pings.Pings.Any(p=>p.Host == newItem.Host))
+            if(!pings!.Pings.Any(p=>p.Host == newItem.Host))
                 pings.Pings.Add(newItem);
 
             var updatedJson = JsonSerializer.Serialize(pings, new JsonSerializerOptions { WriteIndented = true });
@@ -47,22 +56,20 @@ namespace PingViewerApp.Bussines.Services
             var json = File.ReadAllText("db.json");
             var pings = JsonSerializer.Deserialize<PingDatabase>(json);
 
-            // Buscar el item y eliminarlo
-            var item = pings.Pings.FirstOrDefault(p => p.Host == itemToDelete.Host);
-            if (item != null)
+            if (pings != null) 
             {
-                pings.Pings.Remove(item);
+                var item = pings.Pings.FirstOrDefault(p => p.Host == itemToDelete.Host);
 
-                // Guardar los cambios en el archivo JSON
-                var updatedJson = JsonSerializer.Serialize(pings, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText("db.json", updatedJson);
+                if (item != null)
+                {
+                    pings.Pings.Remove(item);
+                    var updatedJson = JsonSerializer.Serialize(pings, new JsonSerializerOptions { WriteIndented = true });
+                    File.WriteAllText("db.json", updatedJson);
+                }
             }
         }
 
-        public async Task<PingResult> RepingOneAsync(PingItem item)
-        {
-            return await pingRequester.PingAsync(item);
-        }
+        public async Task<PingResult> RepingOneAsync(PingItem item) => await pingRequester.PingAsync(item);
 
         public async Task RepingAllAsync(List<PingResult> existingResults, Action<PingResult> onPingCompleted)
         {
@@ -86,12 +93,5 @@ namespace PingViewerApp.Bussines.Services
         }
     }
 
-    public interface IPingMonitor
-    {
-        Task<PingResult> RepingOneAsync(PingItem item);
-        Task PingAllAsync(Action<PingResult> onPingCompleted);
-        Task RepingAllAsync(List<PingResult> existingResults, Action<PingResult> onPingCompleted);
-        void AddNewHost(PingItem newItem);
-        void DeleteHost(PingItem itemToDelete);
-    }
+
 }
