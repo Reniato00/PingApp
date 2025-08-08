@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using PingViewerApp.Bussines.Entities;
 using PingViewerApp.Bussines.Services;
 
 namespace PingViewerApp;
