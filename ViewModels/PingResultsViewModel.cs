@@ -78,6 +78,23 @@ namespace PingViewerApp
             pingMonitor.AddNewHost(newItem);
         }
 
+        public async Task RepingClick(PingResult pingResult)
+        {
+            var item = new PingItem
+            {
+                Name = pingResult.Name,
+                Host = pingResult.Host
+            };
+
+            var result = await pingMonitor.RepingOneAsync(item);
+
+            await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                pingResult.TimeMs = result.TimeMs;
+                pingResult.Status = result.Status;
+            });
+        }
+
         //private async Task RepingAsync(PingResult pingResult) 
         //{
         //    var newResult = await pingMonitor.RepingOneAsync(new PingItem
