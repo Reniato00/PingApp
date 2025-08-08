@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Moq;
+using PingViewerApp.Bussines.Services;
 
 namespace Testing.Bussines
 {
-    internal class PingMonitorTests
+    public class PingMonitorTests
     {
+        private PingMonitor pingMonitor;
+        private readonly Mock<IPingRequester> pingRequester = new();
+        public PingMonitorTests()
+        {
+            pingMonitor = new PingMonitor(pingRequester.Object);
+        }
     }
 }
