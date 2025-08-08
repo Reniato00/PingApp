@@ -80,4 +80,15 @@ public partial class DashboardWindow : Window
         NameTxtBox.Text = string.Empty;
         HostTxtBox.Text = string.Empty;
     }
+
+    private void OnDeleteHost(object? sender, RoutedEventArgs e) 
+    {
+        if (sender is Button btn && btn.DataContext is PingResult pingResult) 
+        {
+            if (DataContext is PingResultsViewModel vm) 
+            {
+                vm.DeleteHost(pingResult);
+            }
+        }
+    }
 }

@@ -48,6 +48,17 @@ namespace PingViewerApp
             }
         }
 
+        public void DeleteHost(PingResult pingResult)
+        {
+            var itemToDelete = new PingItem
+            {
+                Host = pingResult.Host,
+                Name = pingResult.Name
+            };
+            pingMonitor.DeleteHost(itemToDelete);
+            Pings.Remove(pingResult);
+        }
+
         //private async Task RepingAsync(PingResult pingResult) 
         //{
         //    var newResult = await pingMonitor.RepingOneAsync(new PingItem

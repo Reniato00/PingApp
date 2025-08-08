@@ -29,11 +29,17 @@
 							<TextBlock Text="{Binding Host}" Width="150" TextAlignment="Left"/>
 							<TextBlock Text="{Binding Status}" Width="100" TextAlignment="Center"/>
 							<TextBlock Text="{Binding TimeMs}" Width="75" TextAlignment="Center"/>
-							<Button Width="100" Click="OnRepingClick">
-								<TextBlock Text="Reping"
-									HorizontalAlignment="Center"
+							<Button Width="35" Click="OnRepingClick">
+								<TextBlock Text="🔄"
+									HorizontalAlignment="Left"
 									VerticalAlignment="Center"
 									TextAlignment="Center" />
+							</Button>
+							<Button Width="35" Click="OnDeleteHost">
+								<TextBlock Text="❌" 
+									HorizontalAlignment="Right"
+									VerticalAlignment="Center"
+									TextAlignment="Center"/>
 							</Button>
 						</StackPanel>
 					</DataTemplate>

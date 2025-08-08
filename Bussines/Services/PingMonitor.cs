@@ -42,6 +42,23 @@ namespace PingViewerApp.Bussines.Services
             File.WriteAllText("db.json", updatedJson);
         }
 
+        public void DeleteHost(PingItem itemToDelete)
+        {
+            var json = File.ReadAllText("db.json");
+            var pings = JsonSerializer.Deserialize<PingDatabase>(json);
+
+            // Buscar el item y eliminarlo
+            var item = pings.Pings.FirstOrDefault(p => p.Host == itemToDelete.Host);
+            if (item != null)
+            {
+                pings.Pings.Remove(item);
+
+                // Guardar los cambios en el archivo JSON
+                var updatedJson = JsonSerializer.Serialize(pings, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText("db.json", updatedJson);
+            }
+        }
+
         public async Task<PingResult> RepingOneAsync(PingItem item)
         {
             return await pingRequester.PingAsync(item);
@@ -75,5 +92,6 @@ namespace PingViewerApp.Bussines.Services
         Task PingAllAsync(Action<PingResult> onPingCompleted);
         Task RepingAllAsync(List<PingResult> existingResults, Action<PingResult> onPingCompleted);
         void AddNewHost(PingItem newItem);
+        void DeleteHost(PingItem itemToDelete);
     }
 }
