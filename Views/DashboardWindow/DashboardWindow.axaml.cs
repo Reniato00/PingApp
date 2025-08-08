@@ -60,21 +60,7 @@ public partial class DashboardWindow : Window
 
         if (DataContext is PingResultsViewModel vm)
         {
-            var newItem = new PingItem
-            {
-                Name = name,
-                Host = host
-            };
-
-            vm.Pings.Add(new PingResult
-            {
-                Name = newItem.Name,
-                Host = newItem.Host,
-                Status = "Pending",
-                TimeMs = null
-            });
-
-            pingMonitor.AddNewHost(newItem);
+            vm.AddNewHost(name, host);
         }
 
         NameTxtBox.Text = string.Empty;

@@ -59,6 +59,25 @@ namespace PingViewerApp
             Pings.Remove(pingResult);
         }
 
+        public void AddNewHost(string name, string host) 
+        {
+            var newItem = new PingItem
+            {
+                Name = name,
+                Host = host
+            };
+
+            Pings.Add(new PingResult
+            {
+                Name = newItem.Name,
+                Host = newItem.Host,
+                Status = "Pending",
+                TimeMs = null
+            });
+
+            pingMonitor.AddNewHost(newItem);
+        }
+
         //private async Task RepingAsync(PingResult pingResult) 
         //{
         //    var newResult = await pingMonitor.RepingOneAsync(new PingItem
