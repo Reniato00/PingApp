@@ -3,6 +3,7 @@ using Moq;
 using PingViewerApp;
 using PingViewerApp.Bussines.Entities;
 using PingViewerApp.Bussines.Services;
+using PingViewerApp.Utils.Factories;
 using Xunit;
 
 namespace Testing.Bussines
@@ -13,11 +14,12 @@ namespace Testing.Bussines
         private PingMonitor pingMonitor;
         private readonly Mock<IPingRequester> pingRequester = new();
         private readonly Mock<IFileManager> fileManager = new();
+        private readonly Mock<IItemFactory> itemFactory = new();
 
         private readonly Fixture fixture = new();
         public PingMonitorTests()
         {
-            pingMonitor = new PingMonitor(pingRequester.Object, fileManager.Object);
+            pingMonitor = new PingMonitor(pingRequester.Object, fileManager.Object,itemFactory.Object);
         }
 
         [TestMethod]

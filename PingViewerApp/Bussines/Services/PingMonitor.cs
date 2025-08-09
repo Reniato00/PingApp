@@ -1,4 +1,5 @@
 ﻿using PingViewerApp.Bussines.Entities;
+using PingViewerApp.Utils.Factories;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,20 +23,20 @@ namespace PingViewerApp.Bussines.Services
     {
         private readonly IPingRequester pingRequester;
         private readonly IFileManager fileManager;
+        private readonly IItemFactory itemFactory;
 
-        public PingMonitor(IPingRequester pingRequester, IFileManager fileManager)
+        public PingMonitor(IPingRequester pingRequester, IFileManager fileManager, IItemFactory itemFactory)
         {
             this.pingRequester = pingRequester;
             this.fileManager = fileManager;
+            this.itemFactory = itemFactory;
         }
 
         public async Task PingAllAsync(Action<PingResult> onPingCompleted)
         {
             var pings = fileManager.ExtractPings();
 
-            var items = pings?.Pings
-                .Select(x => new PingItem { Name = x.Name, Host = x.Host })
-                .ToList() ?? new List<PingItem>();
+            var items = itemFactory.ExtractListItems(pings);
 
             await pingRequester.PingEachAsync(items, onPingCompleted);
         }
@@ -72,9 +73,7 @@ namespace PingViewerApp.Bussines.Services
         {
             var pings = fileManager.ExtractPings();
 
-            var items = pings?.Pings
-                .Select(x => new PingItem { Name = x.Name, Host = x.Host })
-                .ToList() ?? new List<PingItem>();
+            var items = itemFactory.ExtractListItems(pings);
 
             await pingRequester.PingEachAsync(items, result =>
             {

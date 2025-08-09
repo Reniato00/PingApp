@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PingViewerApp.Bussines.Services;
+using PingViewerApp.Utils.Factories;
 
 namespace PingViewerApp.Utils.Extensions
 {
@@ -10,6 +11,7 @@ namespace PingViewerApp.Utils.Extensions
             services.AddTransient<IPingMonitor, PingMonitor>();
             services.AddTransient<IPingRequester, PingRequester>();
             services.AddTransient<IFileManager, FileManager>();
+            services.AddTransient<IItemFactory, ItemFactory>();
         }
 
         public static void AddViewModels(this IServiceCollection services) 
