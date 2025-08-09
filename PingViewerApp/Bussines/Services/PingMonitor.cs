@@ -21,16 +21,17 @@ namespace PingViewerApp.Bussines.Services
     public class PingMonitor : IPingMonitor
     {
         private readonly IPingRequester pingRequester;
+        private readonly IFileManager fileManager;
 
-        public PingMonitor(IPingRequester pingRequester)
+        public PingMonitor(IPingRequester pingRequester, IFileManager fileManager)
         {
             this.pingRequester = pingRequester;
+            this.fileManager = fileManager;
         }
 
         public async Task PingAllAsync(Action<PingResult> onPingCompleted)
         {
-            var json = File.ReadAllText("db.json");
-            var pings = JsonSerializer.Deserialize<PingDatabase>(json);
+            var pings = fileManager.ExtractPings();
 
             var items = pings?.Pings
                 .Select(x => new PingItem { Name = x.Name, Host = x.Host })
@@ -41,20 +42,17 @@ namespace PingViewerApp.Bussines.Services
 
         public void AddNewHost(PingItem newItem) 
         {
-            var json = File.ReadAllText("db.json");
-            var pings = JsonSerializer.Deserialize<PingDatabase>(json);
+            var pings = fileManager.ExtractPings();
 
             if(!pings!.Pings.Any(p=>p.Host == newItem.Host))
                 pings.Pings.Add(newItem);
 
-            var updatedJson = JsonSerializer.Serialize(pings, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText("db.json", updatedJson);
+            fileManager.UpdatePings(pings);
         }
 
         public void DeleteHost(PingItem itemToDelete)
         {
-            var json = File.ReadAllText("db.json");
-            var pings = JsonSerializer.Deserialize<PingDatabase>(json);
+            var pings = fileManager.ExtractPings();
 
             if (pings != null) 
             {
@@ -63,8 +61,7 @@ namespace PingViewerApp.Bussines.Services
                 if (item != null)
                 {
                     pings.Pings.Remove(item);
-                    var updatedJson = JsonSerializer.Serialize(pings, new JsonSerializerOptions { WriteIndented = true });
-                    File.WriteAllText("db.json", updatedJson);
+                    fileManager.UpdatePings(pings);
                 }
             }
         }
@@ -73,8 +70,7 @@ namespace PingViewerApp.Bussines.Services
 
         public async Task RepingAllAsync(List<PingResult> existingResults, Action<PingResult> onPingCompleted)
         {
-            var json = File.ReadAllText("db.json");
-            var pings = JsonSerializer.Deserialize<PingDatabase>(json);
+            var pings = fileManager.ExtractPings();
 
             var items = pings?.Pings
                 .Select(x => new PingItem { Name = x.Name, Host = x.Host })

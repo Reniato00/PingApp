@@ -9,6 +9,7 @@ namespace PingViewerApp.Utils.Extensions
         {
             services.AddTransient<IPingMonitor, PingMonitor>();
             services.AddTransient<IPingRequester, PingRequester>();
+            services.AddTransient<IFileManager, FileManager>();
         }
 
         public static void AddViewModels(this IServiceCollection services) 
