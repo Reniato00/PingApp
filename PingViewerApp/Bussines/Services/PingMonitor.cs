@@ -35,9 +35,7 @@ namespace PingViewerApp.Bussines.Services
         public async Task PingAllAsync(Action<PingResult> onPingCompleted)
         {
             var pings = fileManager.ExtractPings();
-
             var items = itemFactory.ExtractListItems(pings);
-
             await pingRequester.PingEachAsync(items, onPingCompleted);
         }
 
