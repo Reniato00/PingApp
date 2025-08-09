@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        WindowStartupLocation="CenterScreen"
+        x:Class="PingViewerApp.MainWindow"
+        Title="PingViewerApp"
+        Icon="/Assets/Icons/icon.png"
+        Background="#FFFAFAFA"
+        Width="450" Height="250">
+    <Grid>
+        <TextBlock Text="Welcome to PingViewerApp." 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Top" 
+                   FontSize="24"
+                   Margin="20"/>
+        <TextBlock Text="If is your first time using this app, please enter the IP addresses that you want to ping." 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   FontSize="18"
+                   Margin="20"/>
+        <Button HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="20"
+                Width="100"
+                Click="OnEnterButtonClick">
+            <TextBlock Text="Enter"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    TextAlignment="Center" />
+        </Button>
+    </Grid>
+</Window>
