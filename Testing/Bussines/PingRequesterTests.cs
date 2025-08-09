@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Testing.Bussines
+﻿namespace Testing.Bussines
 {
-    internal class PingRequesterTests
+    [TestClass]
+    public class PingRequesterTests
     {
+        [TestMethod]
+        public async Task PingEachAsync_Test()
+        {
+
+        }
+
+        [TestMethod]
+        public async Task PingAsync_Test()
+        {
+
+        }
     }
 }
