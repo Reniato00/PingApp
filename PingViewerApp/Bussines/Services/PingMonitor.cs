@@ -85,6 +85,4 @@ namespace PingViewerApp.Bussines.Services
             });
         }
     }
-
-
 }
